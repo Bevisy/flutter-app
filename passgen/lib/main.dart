@@ -122,6 +122,7 @@ class _RandomPasswordGeneratorState extends State<RandomPasswordGenerator> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            // 密码是否需要包含特殊字符（除 A-Za-z0-9 以外的字符）
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -192,10 +193,9 @@ class _RandomPasswordGeneratorState extends State<RandomPasswordGenerator> {
             SizedBox(
               height: 16,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            Column(
               children: [
-                IconButton(
+                ElevatedButton.icon(
                   onPressed: () {
                     setState(() {
                       if (_length < 4 || _length > 32) {
@@ -213,33 +213,34 @@ class _RandomPasswordGeneratorState extends State<RandomPasswordGenerator> {
                     });
                   },
                   icon: Icon(Icons.casino_outlined),
+                  label: Text('Generate'),
                 ),
-                SizedBox(
-                  width: 16,
-                ),
-                Expanded(
-                  child: Wrap(
-                    children: [
-                      Text(
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // 使用 Flexible() 和 Warp() 保证长字符串可以折行显示
+                    Flexible(
+                      child: Text(
                         _password,
                         style: Theme.of(context).textTheme.bodyLarge,
                         overflow: TextOverflow.visible,
                       ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  width: 16,
-                ),
-                if (_password != '')
-                  IconButton(
-                    onPressed: _copyToClipboard,
-                    icon: Icon(
-                      Icons.copy,
                     ),
-                    color:
-                        _copied ? Theme.of(context).colorScheme.primary : null,
-                  ),
+                    SizedBox(
+                      width: 16,
+                    ),
+                    if (_password != '')
+                      IconButton(
+                        onPressed: _copyToClipboard,
+                        icon: Icon(
+                          Icons.copy,
+                        ),
+                        color: _copied
+                            ? Theme.of(context).colorScheme.primary
+                            : null,
+                      ),
+                  ],
+                ),
               ],
             ),
           ],
